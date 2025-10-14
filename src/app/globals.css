@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* your custom styles can go below */
+/* enable 3D flip feel */
+.rotate-y-180 { transform: rotateY(180deg); }
+:root { color-scheme: dark; }
+html, body {
+  background: #030712;   /* deep navy */
+}
