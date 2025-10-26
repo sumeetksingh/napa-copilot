@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ATL_050",
+    "name": "Atlanta Midtown",
+    "region": "Southeast",
+    "location": { "lat": 33.7725, "lng": -84.3895 },
+    "capacityPct": 1.05,
+    "returnsPending": 4,
+    "status": "critical"
+  },
+  {
+    "id": "ATL_012",
+    "name": "Atlanta Buckhead",
+    "region": "Southeast",
+    "location": { "lat": 33.8487, "lng": -84.3733 },
+    "capacityPct": 1.05,
+    "returnsPending": 2,
+    "status": "watch"
+  },
+  {
+    "id": "DAL_044",
+    "name": "Dallas Trinity",
+    "region": "South Central",
+    "location": { "lat": 32.7767, "lng": -96.797 },
+    "capacityPct": 0.92,
+    "returnsPending": 6,
+    "status": "watch"
+  },
+  {
+    "id": "DEN_020",
+    "name": "Denver Central",
+    "region": "Mountain",
+    "location": { "lat": 39.7392, "lng": -104.9903 },
+    "capacityPct": 0.81,
+    "returnsPending": 1,
+    "status": "healthy"
+  },
+  {
+    "id": "SEA_014",
+    "name": "Seattle Fremont",
+    "region": "Pacific Northwest",
+    "location": { "lat": 47.6505, "lng": -122.3493 },
+    "capacityPct": 0.89,
+    "returnsPending": 0,
+    "status": "healthy"
+  },
+  {
+    "id": "CHI_031",
+    "name": "Chicago Loop",
+    "region": "Great Lakes",
+    "location": { "lat": 41.8839, "lng": -87.6323 },
+    "capacityPct": 1.03,
+    "returnsPending": 5,
+    "status": "watch"
+  },
+  {
+    "id": "NYC_105",
+    "name": "New York Hudson",
+    "region": "Northeast",
+    "location": { "lat": 40.7547, "lng": -73.996 },
+    "capacityPct": 1.18,
+    "returnsPending": 3,
+    "status": "critical"
+  },
+  {
+    "id": "PHX_022",
+    "name": "Phoenix Mesa",
+    "region": "Southwest",
+    "location": { "lat": 33.4152, "lng": -111.8315 },
+    "capacityPct": 0.76,
+    "returnsPending": 2,
+    "status": "healthy"
+  }
+]

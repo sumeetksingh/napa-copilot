@@ -1,0 +1,29 @@
+import { headers } from "next/headers";
+import CommandCenter from "@/components/CommandCenter";
+import type { NetworkSummary } from "@/lib/types";
+
+async function resolveBaseUrl() {
+  const hdrs = await headers();
+  const forwardedHost = hdrs.get("x-forwarded-host");
+  const host = forwardedHost ?? hdrs.get("host") ?? "localhost:3000";
+  const protocol = host.includes("localhost") || host.startsWith("127.0.0.1") ? "http" : "https";
+  return `${protocol}://${host}`;
+}
+
+async function fetchNetworkSummary(): Promise<NetworkSummary> {
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? (await resolveBaseUrl());
+  const res = await fetch(`${base}/api/network/summary`, { cache: "no-store" });
+  if (!res.ok) {
+    throw new Error(`Failed to load network summary (status ${res.status})`);
+  }
+  return (await res.json()) as NetworkSummary;
+}
+
+export default async function DashboardPage() {
+  const summary = await fetchNetworkSummary();
+  return (
+    <div className="h-[calc(100vh-2rem)] p-4">
+      <CommandCenter summary={summary} />
+    </div>
+  );
+}

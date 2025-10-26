@@ -1,0 +1,26 @@
+[
+  {
+    "id": "action_capacity_atl050",
+    "storeId": "ATL_050",
+    "title": "ATL_050 trending at 105% capacity",
+    "detail": "Brake pad and battery bays are overflowing—schedule a trim run within the next 6 hours.",
+    "type": "capacity",
+    "urgency": "high"
+  },
+  {
+    "id": "action_returns_dal044",
+    "storeId": "DAL_044",
+    "title": "Return agent flagged 10 SKUs in DAL_044",
+    "detail": "Return window closes by Friday. Review the pull sheet before approving the pickup.",
+    "type": "returns",
+    "urgency": "medium"
+  },
+  {
+    "id": "action_ops_nyc105",
+    "storeId": "NYC_105",
+    "title": "Order callout at NYC_105",
+    "detail": "Rush alternator order waiting pick status—confirm parts pull and dispatch by 18:00.",
+    "type": "ops",
+    "urgency": "medium"
+  }
+]

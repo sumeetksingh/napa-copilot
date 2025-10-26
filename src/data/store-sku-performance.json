@@ -1,0 +1,502 @@
+[
+  {
+    "id": "BRAKEPADS-001",
+    "name": "Brake Pads SKU 1",
+    "category": "Brake Pads",
+    "onHand": 125,
+    "weeklySales": 14,
+    "capacityPct": 0.242,
+    "reason": "High velocity – replenish soon",
+    "ranking": 1
+  },
+  {
+    "id": "BRAKEPADS-002",
+    "name": "Brake Pads SKU 2",
+    "category": "Brake Pads",
+    "onHand": 112,
+    "weeklySales": 13,
+    "capacityPct": 0.221,
+    "reason": "High velocity – replenish soon",
+    "ranking": 2
+  },
+  {
+    "id": "BRAKEPADS-003",
+    "name": "Brake Pads SKU 3",
+    "category": "Brake Pads",
+    "onHand": 96,
+    "weeklySales": 12,
+    "capacityPct": 0.198,
+    "reason": "High velocity – replenish soon",
+    "ranking": 3
+  },
+  {
+    "id": "BRAKEPADS-004",
+    "name": "Brake Pads SKU 4",
+    "category": "Brake Pads",
+    "onHand": 90,
+    "weeklySales": 11,
+    "capacityPct": 0.184,
+    "reason": "High velocity – replenish soon",
+    "ranking": 4
+  },
+  {
+    "id": "BRAKEPADS-005",
+    "name": "Brake Pads SKU 5",
+    "category": "Brake Pads",
+    "onHand": 84,
+    "weeklySales": 10,
+    "capacityPct": 0.172,
+    "reason": "High velocity – replenish soon",
+    "ranking": 5
+  },
+  {
+    "id": "BRAKEPADS-006",
+    "name": "Brake Pads SKU 6",
+    "category": "Brake Pads",
+    "onHand": 68,
+    "weeklySales": 6,
+    "capacityPct": 0.086,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 6
+  },
+  {
+    "id": "BRAKEPADS-007",
+    "name": "Brake Pads SKU 7",
+    "category": "Brake Pads",
+    "onHand": 62,
+    "weeklySales": 5,
+    "capacityPct": 0.078,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 7
+  },
+  {
+    "id": "BRAKEPADS-008",
+    "name": "Brake Pads SKU 8",
+    "category": "Brake Pads",
+    "onHand": 57,
+    "weeklySales": 4,
+    "capacityPct": 0.063,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 8
+  },
+  {
+    "id": "BRAKEPADS-009",
+    "name": "Brake Pads SKU 9",
+    "category": "Brake Pads",
+    "onHand": 49,
+    "weeklySales": 3,
+    "capacityPct": 0.052,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 9
+  },
+  {
+    "id": "BRAKEPADS-010",
+    "name": "Brake Pads SKU 10",
+    "category": "Brake Pads",
+    "onHand": 41,
+    "weeklySales": 2,
+    "capacityPct": 0.037,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 10
+  },
+  {
+    "id": "FILTERS-001",
+    "name": "Filters SKU 1",
+    "category": "Filters",
+    "onHand": 118,
+    "weeklySales": 13,
+    "capacityPct": 0.236,
+    "reason": "High velocity – replenish soon",
+    "ranking": 11
+  },
+  {
+    "id": "FILTERS-002",
+    "name": "Filters SKU 2",
+    "category": "Filters",
+    "onHand": 108,
+    "weeklySales": 12,
+    "capacityPct": 0.214,
+    "reason": "High velocity – replenish soon",
+    "ranking": 12
+  },
+  {
+    "id": "FILTERS-003",
+    "name": "Filters SKU 3",
+    "category": "Filters",
+    "onHand": 99,
+    "weeklySales": 11,
+    "capacityPct": 0.201,
+    "reason": "High velocity – replenish soon",
+    "ranking": 13
+  },
+  {
+    "id": "FILTERS-004",
+    "name": "Filters SKU 4",
+    "category": "Filters",
+    "onHand": 92,
+    "weeklySales": 10,
+    "capacityPct": 0.186,
+    "reason": "High velocity – replenish soon",
+    "ranking": 14
+  },
+  {
+    "id": "FILTERS-005",
+    "name": "Filters SKU 5",
+    "category": "Filters",
+    "onHand": 85,
+    "weeklySales": 9,
+    "capacityPct": 0.171,
+    "reason": "High velocity – replenish soon",
+    "ranking": 15
+  },
+  {
+    "id": "FILTERS-006",
+    "name": "Filters SKU 6",
+    "category": "Filters",
+    "onHand": 66,
+    "weeklySales": 5,
+    "capacityPct": 0.083,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 16
+  },
+  {
+    "id": "FILTERS-007",
+    "name": "Filters SKU 7",
+    "category": "Filters",
+    "onHand": 60,
+    "weeklySales": 4,
+    "capacityPct": 0.071,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 17
+  },
+  {
+    "id": "FILTERS-008",
+    "name": "Filters SKU 8",
+    "category": "Filters",
+    "onHand": 54,
+    "weeklySales": 3,
+    "capacityPct": 0.059,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 18
+  },
+  {
+    "id": "FILTERS-009",
+    "name": "Filters SKU 9",
+    "category": "Filters",
+    "onHand": 48,
+    "weeklySales": 2,
+    "capacityPct": 0.046,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 19
+  },
+  {
+    "id": "FILTERS-010",
+    "name": "Filters SKU 10",
+    "category": "Filters",
+    "onHand": 42,
+    "weeklySales": 1,
+    "capacityPct": 0.032,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 20
+  },
+  {
+    "id": "BATTERIES-001",
+    "name": "Batteries SKU 1",
+    "category": "Batteries",
+    "onHand": 130,
+    "weeklySales": 15,
+    "capacityPct": 0.251,
+    "reason": "High velocity – replenish soon",
+    "ranking": 21
+  },
+  {
+    "id": "BATTERIES-002",
+    "name": "Batteries SKU 2",
+    "category": "Batteries",
+    "onHand": 119,
+    "weeklySales": 14,
+    "capacityPct": 0.228,
+    "reason": "High velocity – replenish soon",
+    "ranking": 22
+  },
+  {
+    "id": "BATTERIES-003",
+    "name": "Batteries SKU 3",
+    "category": "Batteries",
+    "onHand": 104,
+    "weeklySales": 12,
+    "capacityPct": 0.205,
+    "reason": "High velocity – replenish soon",
+    "ranking": 23
+  },
+  {
+    "id": "BATTERIES-004",
+    "name": "Batteries SKU 4",
+    "category": "Batteries",
+    "onHand": 96,
+    "weeklySales": 11,
+    "capacityPct": 0.192,
+    "reason": "High velocity – replenish soon",
+    "ranking": 24
+  },
+  {
+    "id": "BATTERIES-005",
+    "name": "Batteries SKU 5",
+    "category": "Batteries",
+    "onHand": 88,
+    "weeklySales": 10,
+    "capacityPct": 0.178,
+    "reason": "High velocity – replenish soon",
+    "ranking": 25
+  },
+  {
+    "id": "BATTERIES-006",
+    "name": "Batteries SKU 6",
+    "category": "Batteries",
+    "onHand": 70,
+    "weeklySales": 6,
+    "capacityPct": 0.087,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 26
+  },
+  {
+    "id": "BATTERIES-007",
+    "name": "Batteries SKU 7",
+    "category": "Batteries",
+    "onHand": 63,
+    "weeklySales": 5,
+    "capacityPct": 0.074,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 27
+  },
+  {
+    "id": "BATTERIES-008",
+    "name": "Batteries SKU 8",
+    "category": "Batteries",
+    "onHand": 58,
+    "weeklySales": 4,
+    "capacityPct": 0.061,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 28
+  },
+  {
+    "id": "BATTERIES-009",
+    "name": "Batteries SKU 9",
+    "category": "Batteries",
+    "onHand": 52,
+    "weeklySales": 3,
+    "capacityPct": 0.049,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 29
+  },
+  {
+    "id": "BATTERIES-010",
+    "name": "Batteries SKU 10",
+    "category": "Batteries",
+    "onHand": 45,
+    "weeklySales": 2,
+    "capacityPct": 0.038,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 30
+  },
+  {
+    "id": "ROTORS-001",
+    "name": "Rotors SKU 1",
+    "category": "Rotors",
+    "onHand": 121,
+    "weeklySales": 12,
+    "capacityPct": 0.233,
+    "reason": "High velocity – replenish soon",
+    "ranking": 31
+  },
+  {
+    "id": "ROTORS-002",
+    "name": "Rotors SKU 2",
+    "category": "Rotors",
+    "onHand": 111,
+    "weeklySales": 11,
+    "capacityPct": 0.215,
+    "reason": "High velocity – replenish soon",
+    "ranking": 32
+  },
+  {
+    "id": "ROTORS-003",
+    "name": "Rotors SKU 3",
+    "category": "Rotors",
+    "onHand": 100,
+    "weeklySales": 10,
+    "capacityPct": 0.198,
+    "reason": "High velocity – replenish soon",
+    "ranking": 33
+  },
+  {
+    "id": "ROTORS-004",
+    "name": "Rotors SKU 4",
+    "category": "Rotors",
+    "onHand": 94,
+    "weeklySales": 9,
+    "capacityPct": 0.183,
+    "reason": "High velocity – replenish soon",
+    "ranking": 34
+  },
+  {
+    "id": "ROTORS-005",
+    "name": "Rotors SKU 5",
+    "category": "Rotors",
+    "onHand": 88,
+    "weeklySales": 8,
+    "capacityPct": 0.172,
+    "reason": "High velocity – replenish soon",
+    "ranking": 35
+  },
+  {
+    "id": "ROTORS-006",
+    "name": "Rotors SKU 6",
+    "category": "Rotors",
+    "onHand": 69,
+    "weeklySales": 5,
+    "capacityPct": 0.081,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 36
+  },
+  {
+    "id": "ROTORS-007",
+    "name": "Rotors SKU 7",
+    "category": "Rotors",
+    "onHand": 63,
+    "weeklySales": 4,
+    "capacityPct": 0.067,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 37
+  },
+  {
+    "id": "ROTORS-008",
+    "name": "Rotors SKU 8",
+    "category": "Rotors",
+    "onHand": 58,
+    "weeklySales": 3,
+    "capacityPct": 0.058,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 38
+  },
+  {
+    "id": "ROTORS-009",
+    "name": "Rotors SKU 9",
+    "category": "Rotors",
+    "onHand": 52,
+    "weeklySales": 2,
+    "capacityPct": 0.047,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 39
+  },
+  {
+    "id": "ROTORS-010",
+    "name": "Rotors SKU 10",
+    "category": "Rotors",
+    "onHand": 46,
+    "weeklySales": 1,
+    "capacityPct": 0.034,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 40
+  },
+  {
+    "id": "OTHER-001",
+    "name": "Other SKU 1",
+    "category": "Other",
+    "onHand": 132,
+    "weeklySales": 13,
+    "capacityPct": 0.244,
+    "reason": "High velocity – replenish soon",
+    "ranking": 41
+  },
+  {
+    "id": "OTHER-002",
+    "name": "Other SKU 2",
+    "category": "Other",
+    "onHand": 120,
+    "weeklySales": 12,
+    "capacityPct": 0.226,
+    "reason": "High velocity – replenish soon",
+    "ranking": 42
+  },
+  {
+    "id": "OTHER-003",
+    "name": "Other SKU 3",
+    "category": "Other",
+    "onHand": 109,
+    "weeklySales": 11,
+    "capacityPct": 0.209,
+    "reason": "High velocity – replenish soon",
+    "ranking": 43
+  },
+  {
+    "id": "OTHER-004",
+    "name": "Other SKU 4",
+    "category": "Other",
+    "onHand": 101,
+    "weeklySales": 10,
+    "capacityPct": 0.195,
+    "reason": "High velocity – replenish soon",
+    "ranking": 44
+  },
+  {
+    "id": "OTHER-005",
+    "name": "Other SKU 5",
+    "category": "Other",
+    "onHand": 93,
+    "weeklySales": 9,
+    "capacityPct": 0.181,
+    "reason": "High velocity – replenish soon",
+    "ranking": 45
+  },
+  {
+    "id": "OTHER-006",
+    "name": "Other SKU 6",
+    "category": "Other",
+    "onHand": 75,
+    "weeklySales": 6,
+    "capacityPct": 0.089,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 46
+  },
+  {
+    "id": "OTHER-007",
+    "name": "Other SKU 7",
+    "category": "Other",
+    "onHand": 68,
+    "weeklySales": 5,
+    "capacityPct": 0.078,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 47
+  },
+  {
+    "id": "OTHER-008",
+    "name": "Other SKU 8",
+    "category": "Other",
+    "onHand": 60,
+    "weeklySales": 4,
+    "capacityPct": 0.063,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 48
+  },
+  {
+    "id": "OTHER-009",
+    "name": "Other SKU 9",
+    "category": "Other",
+    "onHand": 53,
+    "weeklySales": 3,
+    "capacityPct": 0.051,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 49
+  },
+  {
+    "id": "OTHER-010",
+    "name": "Other SKU 10",
+    "category": "Other",
+    "onHand": 45,
+    "weeklySales": 2,
+    "capacityPct": 0.036,
+    "reason": "Slow mover – candidate for return",
+    "ranking": 50
+  }
+]

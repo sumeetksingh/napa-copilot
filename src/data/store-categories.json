@@ -1,0 +1,7 @@
+[
+  { "name": "Brake Pads", "pct": 0.15 },
+  { "name": "Filters", "pct": 0.1 },
+  { "name": "Batteries", "pct": 0.12 },
+  { "name": "Rotors", "pct": 0.08 },
+  { "name": "Other", "pct": 0.55 }
+]

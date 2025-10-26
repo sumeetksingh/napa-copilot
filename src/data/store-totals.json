@@ -1,0 +1,10 @@
+{
+  "ATL_012": { "onHand": 128450, "skuCount": 8421, "capacityPct": 1.05 },
+  "ATL_050": { "onHand": 132880, "skuCount": 8940, "capacityPct": 1.05 },
+  "DAL_044": { "onHand": 117200, "skuCount": 7980, "capacityPct": 0.92 },
+  "DEN_020": { "onHand": 104310, "skuCount": 6450, "capacityPct": 0.81 },
+  "SEA_014": { "onHand": 110540, "skuCount": 7280, "capacityPct": 0.89 },
+  "CHI_031": { "onHand": 125900, "skuCount": 8710, "capacityPct": 1.03 },
+  "NYC_105": { "onHand": 139600, "skuCount": 9210, "capacityPct": 1.18 },
+  "PHX_022": { "onHand": 95420, "skuCount": 6910, "capacityPct": 0.76 }
+}
