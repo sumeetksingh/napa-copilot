@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Mic from "@/components/icons/Mic";
-import { useStore, type AgentActionState } from "@/lib/useStore";
-import MicRecorder from "mic-recorder-to-mp3";
+import { useStore, type AgentActionState, type ConversationMessage } from "@/lib/useStore";
 
-const recorder = typeof window !== "undefined" ? new MicRecorder({ bitRate: 128 }) : null;
+type Mp3Recorder = {
+  start: () => Promise<void>;
+  stop: () => { getMp3: () => Promise<[BlobPart[], Blob]> };
+};
+
+type RecorderConstructor = new (options: { bitRate: number }) => Mp3Recorder;
 
 type RecordStatus = "idle" | "recording" | "processing" | "error";
 
@@ -18,6 +22,7 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
   const [recordStatus, setRecordStatus] = useState<RecordStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const mountedRef = useRef(false);
+  const recorderRef = useRef<Mp3Recorder | null>(null);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -26,7 +31,28 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
     };
   }, []);
 
-  const handleCommand = async (raw: string) => {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let cancelled = false;
+    import("mic-recorder-to-mp3")
+      .then((module) => {
+        if (cancelled) return;
+        const Recorder = (module.default ?? module) as RecorderConstructor;
+        recorderRef.current = new Recorder({ bitRate: 128 });
+      })
+      .catch((error) => {
+        console.error("Failed to load mic-recorder-to-mp3", error);
+        if (mountedRef.current) {
+          setErrorMessage("Microphone recording module failed to load.");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleCommand = useCallback(
+    async (raw: string) => {
     const input = raw.trim();
     if (!input) return;
     const store = useStore.getState();
@@ -107,8 +133,9 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
       }
 
       const payload = (await res.json()) as {
-        narration?: Array<{ id: string; order: number; tone: string; text: string; actionId?: string }>;
+        narration?: Array<{ id: string; order: number; tone?: ConversationMessage["tone"]; text: string; actionId?: string }>;
         actions?: AgentActionState[];
+        voiceSummary?: string;
       };
 
       payload.narration?.forEach((entry) => {
@@ -117,7 +144,7 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
           role: "agent",
           text: entry.text,
           actionId: entry.actionId,
-          tone: entry.tone as any,
+          tone: entry.tone,
         });
       });
 
@@ -130,11 +157,38 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
         upsertAction(normalized);
         setActionStatus(normalized.id, "pending");
       });
+
+      const fallbackActionSummary = payload.actions?.length
+        ? payload.actions
+            .map((action) => `${action.title}. Shift ${action.shiftPct}% from ${action.sourceCategory} to ${action.targetCategory}.`)
+            .join(" ")
+        : "";
+      const voiceSnippet =
+        payload.voiceSummary ?? fallbackActionSummary || payload.narration?.map((entry) => entry.text).join(" ") ?? "";
+      if (voiceSnippet.trim().length > 0) {
+        try {
+          const voiceRes = await fetch("/api/voice/summary", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: voiceSnippet, storeId }),
+          });
+          if (voiceRes.ok) {
+            const blob = await voiceRes.blob();
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            void audio.play().finally(() => URL.revokeObjectURL(url));
+          }
+        } catch (err) {
+          console.warn("Voice playback failed", err);
+        }
+      }
     } catch (error) {
       console.error("Agent intent call failed", error);
       log("Agent is unavailable. Try again shortly.");
     }
-  };
+    },
+    [appendConversation, removeAction, setActionStatus, storeId, upsertAction]
+  );
 
   const send = () => {
     if (!text.trim()) return;
@@ -144,11 +198,11 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
     setText("");
   };
 
-  const stopRecording = async () => {
-    if (!recorder) return;
+  const stopRecording = useCallback(async () => {
+    if (!recorderRef.current) return;
     setRecordStatus("processing");
     try {
-      const [buffer, blob] = await recorder.stop().getMp3();
+      const [buffer] = await recorderRef.current.stop().getMp3();
       if (!mountedRef.current) return;
 
       const audioFile = new File(buffer, "speech.mp3", {
@@ -190,14 +244,17 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
         setRecordStatus("idle");
       }
     }
-  };
+  }, [appendConversation, handleCommand, setErrorMessage, setRecordStatus]);
 
   const startRecording = async () => {
-    if (!recorder) return;
+    if (!recorderRef.current) {
+      setErrorMessage("Recorder not ready yet.");
+      return;
+    }
     try {
       setErrorMessage(null);
       await navigator.mediaDevices.getUserMedia({ audio: true });
-      await recorder.start();
+      await recorderRef.current.start();
       if (mountedRef.current) {
         setRecordStatus("recording");
       }
@@ -211,7 +268,6 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
   };
 
   useEffect(() => {
-    if (!recorder) return;
     const handleKeyUp = async (event: KeyboardEvent) => {
       if (event.code === "Space" && recordStatus === "recording") {
         await stopRecording();
@@ -221,7 +277,7 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
     return () => {
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [recordStatus]);
+  }, [recordStatus, stopRecording]);
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {

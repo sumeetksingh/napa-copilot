@@ -15,6 +15,7 @@
     "@react-three/fiber": "^9.3.0",
     "@react-three/postprocessing": "^3.0.4",
     "framer-motion": "^12.23.24",
+    "mic-recorder-to-mp3": "^2.2.1",
     "next": "15.5.4",
     "openai": "^4.26.1",
     "react": "19.1.0",
