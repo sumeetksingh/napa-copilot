@@ -195,8 +195,14 @@ export const useStore = create<StoreState>((set, get) => ({
       const adjustments = { ...state.overrides.categoryAdjustments };
       adjustments[action.sourceCategory] = (adjustments[action.sourceCategory] ?? 0) - ratio;
       adjustments[action.targetCategory] = (adjustments[action.targetCategory] ?? 0) + ratio;
-      const capacityOffset = state.overrides.capacityOffset - ratio * 0.2;
-      const onHandOffset = state.overrides.onHandOffset - Math.round(baseline.onHand * ratio * 0.05);
+      const baseCapacityDelta = ratio * 0.2;
+      const capacityDelta = baseCapacityDelta > 0 ? Math.max(baseCapacityDelta, 0.05) : 0;
+      const capacityOffset = state.overrides.capacityOffset - capacityDelta;
+      const baseOnHandDelta = Math.round(baseline.onHand * ratio * 0.05);
+      const onHandScale = baseCapacityDelta > 0 ? capacityDelta / baseCapacityDelta : 1;
+      const scaledOnHandDelta =
+        baseCapacityDelta > 0 ? Math.max(1, Math.round(baseOnHandDelta * onHandScale)) : baseOnHandDelta;
+      const onHandOffset = state.overrides.onHandOffset - scaledOnHandDelta;
       return {
         overrides: {
           categoryAdjustments: adjustments,

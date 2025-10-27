@@ -1297,6 +1297,7 @@ html, body {
   flex-direction: column;
   gap: 1rem;
   z-index: 60;
+  overflow: hidden;
 }
 
 .review-drawer__header {
@@ -1321,6 +1322,31 @@ html, body {
   color: #f3f6ff;
   font-size: 1.2rem;
   letter-spacing: 0.06em;
+}
+
+.review-drawer__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(67, 104, 164, 0.6) transparent;
+}
+
+.review-drawer__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.review-drawer__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.review-drawer__body::-webkit-scrollbar-thumb {
+  background: rgba(67, 104, 164, 0.6);
+  border-radius: 999px;
 }
 
 .review-drawer__summary {
@@ -1355,6 +1381,7 @@ html, body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  min-height: 0;
 }
 
 .review-drawer__skus ul {

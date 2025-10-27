@@ -74,52 +74,58 @@ export default function ReviewDrawer() {
               </div>
               <button type="button" className="review-drawer__close" onClick={closeDrawer}>
                 Close
-            </button>
-          </div>
-          <h2>{activeAction.title}</h2>
-          <p className="review-drawer__summary">{activeAction.summary}</p>
+              </button>
+            </div>
+            <div className="review-drawer__body">
+              <h2>{activeAction.title}</h2>
+              <p className="review-drawer__summary">{activeAction.summary}</p>
 
-          <div className="review-drawer__grid">
-            <div>
-              <span className="label">Shift %</span>
-              <span className="value">{activeAction.shiftPct}%</span>
-            </div>
-            <div>
-              <span className="label">From</span>
-              <span className="value">{activeAction.sourceCategory}</span>
-            </div>
-            <div>
-              <span className="label">To</span>
-              <span className="value">{activeAction.targetCategory}</span>
-            </div>
-          </div>
+              <div className="review-drawer__grid">
+                <div>
+                  <span className="label">Shift %</span>
+                  <span className="value">{activeAction.shiftPct}%</span>
+                </div>
+                <div>
+                  <span className="label">From</span>
+                  <span className="value">{activeAction.sourceCategory}</span>
+                </div>
+                <div>
+                  <span className="label">To</span>
+                  <span className="value">{activeAction.targetCategory}</span>
+                </div>
+              </div>
 
-          <div className="review-drawer__skus">
-            <div>
-              <span className="label">Trim immediately</span>
-              <ul>
-                {(activeAction.remove ?? []).map((sku) => (
-                  <li key={sku.id}>
-                    <strong>{sku.name}</strong>
-                    <span>#{sku.ranking} • {sku.reason}</span>
-                  </li>
-                ))}
-                {activeAction.remove.length === 0 && <li className="muted">No trim candidates.</li>}
-              </ul>
+              <div className="review-drawer__skus">
+                <div>
+                  <span className="label">Trim immediately</span>
+                  <ul>
+                    {(activeAction.remove ?? []).map((sku) => (
+                      <li key={sku.id}>
+                        <strong>{sku.name}</strong>
+                        <span>
+                          #{sku.ranking} • {sku.reason}
+                        </span>
+                      </li>
+                    ))}
+                    {activeAction.remove.length === 0 && <li className="muted">No trim candidates.</li>}
+                  </ul>
+                </div>
+                <div>
+                  <span className="label">Backfill candidates</span>
+                  <ul>
+                    {(activeAction.add ?? []).map((sku) => (
+                      <li key={sku.id}>
+                        <strong>{sku.name}</strong>
+                        <span>
+                          {sku.fitScore}% fit • {sku.rationale}
+                        </span>
+                      </li>
+                    ))}
+                    {activeAction.add.length === 0 && <li className="muted">No backfill recommendations.</li>}
+                  </ul>
+                </div>
+              </div>
             </div>
-            <div>
-              <span className="label">Backfill candidates</span>
-              <ul>
-                {(activeAction.add ?? []).map((sku) => (
-                  <li key={sku.id}>
-                    <strong>{sku.name}</strong>
-                    <span>{sku.fitScore}% fit • {sku.rationale}</span>
-                  </li>
-                ))}
-                {activeAction.add.length === 0 && <li className="muted">No backfill recommendations.</li>}
-              </ul>
-            </div>
-          </div>
 
             <div className="review-drawer__footer">
               <button type="button" className="secondary" onClick={closeDrawer}>
