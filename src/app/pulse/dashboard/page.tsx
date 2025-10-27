@@ -4,11 +4,12 @@ import type { NetworkSummary } from "@/lib/types";
 import stores from "@/data/network-stores.json";
 import suggestedActions from "@/data/network-actions.json";
 
-const FALLBACK_SUMMARY: NetworkSummary = {
-  generatedAt: new Date().toISOString(),
+export const dynamic = "force-dynamic";
+
+const FALLBACK_SUMMARY = {
   stores: stores as NetworkSummary["stores"],
   suggested: suggestedActions as NetworkSummary["suggested"],
-};
+} as const;
 
 async function resolveBaseUrl() {
   const hdrs = await headers();
@@ -29,8 +30,8 @@ async function fetchNetworkSummary(): Promise<NetworkSummary> {
   } catch (error) {
     console.warn("Falling back to bundled network summary", error);
     return {
-      ...FALLBACK_SUMMARY,
       generatedAt: new Date().toISOString(),
+      ...FALLBACK_SUMMARY,
     };
   }
 }
