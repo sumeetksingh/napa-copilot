@@ -77,10 +77,6 @@ export default function LiveSummaryPanel({
     totals: baselineTotals,
   });
   const [activeActionId, setActiveActionId] = useState<string | null>(null);
-  const [context, setContext] = useState<{ categories: CategorySummary[]; skuPerformance: SkuPerformance[] }>({
-    categories: [],
-    skuPerformance: [],
-  });
   const [introAudioUrl, setIntroAudioUrl] = useState<string | null>(null);
   const [introAutoplayFailed, setIntroAutoplayFailed] = useState(false);
 
@@ -101,7 +97,6 @@ export default function LiveSummaryPanel({
       clearActions();
       setHasHeardIntro(false);
       setIntroAudioUrl(null);
-      setContext({ categories: [], skuPerformance: [] });
       setMeta({
         id: storeId,
         capacityPct: baselineCapacityPct,
@@ -119,7 +114,6 @@ export default function LiveSummaryPanel({
       generatedAt: string;
     }) => {
       setMeta(payload.store);
-      setContext({ categories: payload.categories, skuPerformance: payload.skuPerformance });
       payload.narration
         .slice()
         .sort((a, b) => a.order - b.order)
@@ -174,16 +168,6 @@ export default function LiveSummaryPanel({
         const payload = JSON.parse(event.data) as { store: AgentMeta };
         setMeta(payload.store);
       });
-      source.addEventListener("categories", (event) => {
-        if (cancelled) return;
-        const data = JSON.parse(event.data) as CategorySummary[];
-        setContext((prev) => ({ ...prev, categories: data }));
-      });
-      source.addEventListener("skuPerformance", (event) => {
-        if (cancelled) return;
-        const data = JSON.parse(event.data) as SkuPerformance[];
-        setContext((prev) => ({ ...prev, skuPerformance: data }));
-      });
       source.addEventListener("narration", (event) => {
         if (cancelled) return;
         const entry = JSON.parse(event.data) as NarrationEntry;
@@ -226,16 +210,19 @@ export default function LiveSummaryPanel({
     };
   }, [
     agentFeedPath,
+    appendConversation,
     baselineCapacityPct,
     baselineHealth,
     baselineTotals,
     clearActions,
     clearConversation,
-    appendConversation,
     setActionStatus,
     setActiveAction,
+    setActiveActionId,
     setFilters,
+    setHasHeardIntro,
     setHighlight,
+    setIntroAudioUrl,
     storeId,
     upsertAction,
   ]);
@@ -320,7 +307,7 @@ export default function LiveSummaryPanel({
     return () => {
       cancelled = true;
     };
-  }, [hasHeardIntro, introAudioUrl, status, meta, conversation, actionableActions, storeId]);
+  }, [actionableActions, conversation, hasHeardIntro, introAudioUrl, meta, setIntroAudioUrl, status, storeId]);
 
   useEffect(() => {
     if (!introAudioUrl || hasHeardIntro) return;
@@ -341,7 +328,7 @@ export default function LiveSummaryPanel({
     return () => {
       audio.pause();
     };
-  }, [introAudioUrl, hasHeardIntro, setHasHeardIntro]);
+  }, [introAudioUrl, hasHeardIntro, setHasHeardIntro, setIntroAutoplayFailed]);
 
   useEffect(() => {
     if (!introAudioUrl) return () => {};

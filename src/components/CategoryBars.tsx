@@ -31,8 +31,17 @@ export default function CategoryBars({ categories }:{ categories: {name:string;p
             </Text>
             {isHover && (
               <Html position={[0, h/2 + 1.3, 0]} center distanceFactor={10} style={{ pointerEvents: "none" }}>
-                <div style="background:#0b0f1a; border:1px solid #163162; color:#fff; padding:6px 8px; border-radius:8px; font-size:12px;">
-                  {(c.pct*100).toFixed(1)}%
+                <div
+                  style={{
+                    background: "#0b0f1a",
+                    border: "1px solid #163162",
+                    color: "#ffffff",
+                    padding: "6px 8px",
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
+                >
+                  {(c.pct * 100).toFixed(1)}%
                 </div>
               </Html>
             )}

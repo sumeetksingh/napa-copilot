@@ -44,7 +44,7 @@ export default function StackedBars3D({
       </mesh>
 
       {/* Stacks */}
-      {data.map((c, i) => {
+      {data.map((c) => {
         const h = Math.max(0.15, c.pct * height);
         const y = -height / 2 + yCursor + h / 2;
         yCursor += h + gap;

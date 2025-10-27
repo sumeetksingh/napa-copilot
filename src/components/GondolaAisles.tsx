@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { InstancedMesh, Object3D, Color, MeshStandardMaterial } from "three";
 import { Text } from "@react-three/drei";
 import { catColor } from "@/lib/colors";
@@ -113,13 +113,14 @@ export default function GondolaAisles({ categories }:{
   }, [assignments, slots]);
 
   // ---- INSTANCED BOXES ----
-  const boxRef = useRef<InstancedMesh>(null!);
+  const boxRef = useRef<InstancedMesh | null>(null);
   const dummy = useMemo(()=>new Object3D(),[]);
   const colors = useMemo(()=>assignments.map(a=>new Color(catColor(a.cat))),[assignments]);
 
   // prepare matrices/colors once
-  useMemo(()=>{
-    if (!boxRef.current) return;
+  useEffect(()=>{
+    const mesh = boxRef.current;
+    if (!mesh) return;
     assignments.forEach((a,i)=>{
       const s = slots[a.slot];
       const visible = !filters.categories.length || filters.categories.includes(a.cat);
@@ -127,16 +128,17 @@ export default function GondolaAisles({ categories }:{
       dummy.position.set(s.x, s.y + h/2, s.z);
       dummy.scale.set(0.9, 1, 0.9);
       dummy.updateMatrix();
-      boxRef.current.setMatrixAt(i, dummy.matrix);
+      mesh.setMatrixAt(i, dummy.matrix);
 
       const base = colors[i].clone();
       if (highlight && a.cat === highlight) base.offsetHSL(0,0.25,0.15);
-      boxRef.current.setColorAt(i, base);
+      mesh.setColorAt(i, base);
     });
-    boxRef.current.instanceMatrix.needsUpdate = true;
-    // @ts-ignore
-    boxRef.current.instanceColor.needsUpdate = true;
-  }, [assignments, slots, colors, highlight, filters]);
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) {
+      mesh.instanceColor.needsUpdate = true;
+    }
+  }, [assignments, colors, dummy, filters, highlight, slots]);
 
   // Shelf geometry: side panels + shelves (simple boxes), repeated per unit
   const shelfMaterial = useMemo(()=>new MeshStandardMaterial({ color:"#d8dbe5", roughness:0.7, metalness:0.05 }),[]);
@@ -172,7 +174,7 @@ export default function GondolaAisles({ categories }:{
       ))}
 
       {/* Virtual boxes */}
-      <instancedMesh ref={boxRef as any} args={[undefined, undefined, assignments.length]}>
+      <instancedMesh ref={boxRef} args={[undefined, undefined, assignments.length]}>
         <boxGeometry args={[unitW/slotsPerLevel * 0.8, 0.28, unitD*0.6]} />
         <meshStandardMaterial emissiveIntensity={0.55} metalness={0.2} roughness={0.45} toneMapped={false}/>
       </instancedMesh>
@@ -181,13 +183,15 @@ export default function GondolaAisles({ categories }:{
       <group>
         {centroids.map(c=>{
           const color = catColor(c.name);
+          const category = categories.find((entry) => entry.name === c.name);
+          const percentLabel = category ? Math.round(category.pct * 100) : 0;
           return (
             <group key={c.name} position={[c.x, c.y + 0.35, c.z]}>
               <Text fontSize={0.55} color={color} outlineColor="#001b2e" outlineWidth={0.02} anchorX="center" anchorY="middle">
                 {c.name}
               </Text>
               <Text position={[0,-0.5,0]} fontSize={0.4} color="#ffffff" anchorX="center" anchorY="middle">
-                {Math.round(categories.find(k=>k.name===c.name)?.pct * 100)}%
+                {percentLabel}%
               </Text>
             </group>
           );

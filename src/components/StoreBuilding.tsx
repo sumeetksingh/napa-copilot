@@ -1,6 +1,6 @@
 "use client";
-import { useMemo, useRef } from "react";
-import { Group, InstancedMesh, Object3D, Color } from "three";
+import { useEffect, useMemo, useRef } from "react";
+import { InstancedMesh, Object3D, Color } from "three";
 import { Text, Edges, ContactShadows } from "@react-three/drei";
 import { catColor } from "@/lib/colors";
 
@@ -42,14 +42,16 @@ export default function StoreBuilding({ categories, highlight }: Props) {
   /**
    * Instanced shelves: each aisle = several bays (boxes)
    */
-  const instRef = useRef<InstancedMesh>(null!);
+  const instRef = useRef<InstancedMesh | null>(null);
   const dummy = useMemo(()=>new Object3D(),[]);
   const shelvesCount = 6 * 8; // 6 aisles * 8 bays
 
-  useMemo(() => {
-    if (!instRef.current) return;
+  useEffect(() => {
+    const mesh = instRef.current;
+    if (!mesh) return;
     let i = 0;
-    const bayW = 2.0, bayH = 1.6, bayD = 0.5;
+    const bayW = 2.0;
+    const bayH = 1.6;
     const runW = W - 4.0; // margin from side walls
     const baysPerRun = 8;
     const startX = -runW/2 + bayW/2;
@@ -60,16 +62,18 @@ export default function StoreBuilding({ categories, highlight }: Props) {
         dummy.position.set(x, bayH/2, a.z);
         dummy.scale.set(1,1,1);
         dummy.updateMatrix();
-        instRef.current.setMatrixAt(i, dummy.matrix);
+        mesh.setMatrixAt(i, dummy.matrix);
         // color per category; bright if highlighted
         const base = new Color(catColor(a.cat));
         if (highlight && a.cat === highlight) base.offsetHSL(0, 0.25, 0.15);
-        instRef.current.setColorAt(i, base);
+        mesh.setColorAt(i, base);
         i++;
       }
     });
-    instRef.current.instanceMatrix.needsUpdate = true;
-    (instRef.current.instanceColor as any).needsUpdate = true;
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) {
+      mesh.instanceColor.needsUpdate = true;
+    }
   }, [aisles, dummy, highlight]);
 
   return (
@@ -147,7 +151,7 @@ export default function StoreBuilding({ categories, highlight }: Props) {
       </Text>
 
       {/* Interior shelves (instances) */}
-      <instancedMesh ref={instRef as any} args={[undefined, undefined, shelvesCount]}>
+      <instancedMesh ref={instRef} args={[undefined, undefined, shelvesCount]}>
         <boxGeometry args={[2.0, 1.6, 0.5]} />
         <meshStandardMaterial emissiveIntensity={0.35} metalness={0.2} roughness={0.45} />
       </instancedMesh>

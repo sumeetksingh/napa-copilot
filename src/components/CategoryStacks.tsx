@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Billboard, Text } from "@react-three/drei";
 import { Color } from "three";
 import { catColor } from "@/lib/colors";
@@ -37,7 +37,6 @@ export default function CategoryStacks({ categories }:{ categories: Cat[] }) {
     const backRow  = cats.slice(half);
 
     const makeRow = (arr: typeof cats, z: number) => {
-      const gap = 1.4;
       const usable = W-6;
       return arr.map((c, i) => {
         const x = -usable/2 + (i * (usable/(Math.max(1,arr.length-1)))) ;
@@ -65,7 +64,7 @@ export default function CategoryStacks({ categories }:{ categories: Cat[] }) {
         if (active) emissive.offsetHSL(0, 0.25, 0.15);
 
         // draw the stack as multiple boxes in a cols x rows x height grid
-        const items: JSX.Element[] = [];
+        const items: ReactNode[] = [];
         for (let i=0;i<s.cols;i++){
           for (let j=0;j<s.rows;j++){
             for (let k=0;k<s.height;k++){

@@ -3,7 +3,8 @@ import { Edges } from "@react-three/drei";
 
 export default function Mezzanine() {
   // Store interior coords: keep consistent with StoreBuilding (W=22, D=16, H=9)
-  const W = 22, D = 16, H = 9;
+  const W = 22;
+  const D = 16;
   const deckY = 4.5;        // height of mezzanine deck
   const deckW = W - 4;      // leave side margins
   const deckD = (D - 3) / 2;// mezzanine depth at back half

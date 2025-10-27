@@ -1,35 +1,43 @@
 "use client";
+import { useMemo, useEffect } from "react";
 import { useTexture } from "@react-three/drei";
 import { RepeatWrapping, Texture } from "three";
-import { useMemo } from "react";
+
+type AsphaltTextures = Partial<{ map: Texture; normalMap: Texture; roughnessMap: Texture; aoMap: Texture }>;
+
+const texturePaths = {
+  map: "/textures/asphalt_albedo.jpg",
+  normalMap: "/textures/asphalt_normal.jpg",
+  roughnessMap: "/textures/asphalt_rough.jpg",
+  aoMap: "/textures/asphalt_ao.jpg",
+} as const;
 
 export default function ParkingLot() {
-  let tex: { map?: Texture; normalMap?: Texture; roughnessMap?: Texture; aoMap?: Texture } = {};
-  try {
-    tex = useTexture({
-      map: "/textures/asphalt_albedo.jpg",
-      normalMap: "/textures/asphalt_normal.jpg",
-      roughnessMap: "/textures/asphalt_rough.jpg",
-      aoMap: "/textures/asphalt_ao.jpg",
+  const textures = useTexture(texturePaths) as AsphaltTextures;
+
+  useEffect(() => {
+    const maps = [textures.map, textures.normalMap, textures.roughnessMap, textures.aoMap] as Texture[];
+    maps.forEach((texture) => {
+      if (!texture) return;
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+      texture.repeat.set(8, 8);
     });
-    [tex.map, tex.normalMap, tex.roughnessMap, tex.aoMap].forEach(t => {
-      if (!t) return;
-      t.wrapS = t.wrapT = RepeatWrapping;
-      t.repeat.set(8, 8);
-    });
-  } catch { /* fall back to flat color below */ }
+  }, [textures.aoMap, textures.map, textures.normalMap, textures.roughnessMap]);
+
+  const hasTexture = useMemo(() => Boolean(textures.map), [textures.map]);
 
   return (
     <group>
       {/* Parking lot surface */}
       <mesh position={[0, -0.001, 10]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[80, 50]} />
-        {tex.map ? (
+        {hasTexture && textures.map ? (
           <meshStandardMaterial
-            map={tex.map}
-            normalMap={tex.normalMap}
-            roughnessMap={tex.roughnessMap}
-            aoMap={tex.aoMap}
+            map={textures.map}
+            normalMap={textures.normalMap}
+            roughnessMap={textures.roughnessMap}
+            aoMap={textures.aoMap}
             roughness={0.9}
             metalness={0.1}
           />
