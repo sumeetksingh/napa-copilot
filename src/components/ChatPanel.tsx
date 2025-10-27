@@ -163,8 +163,8 @@ export default function ChatPanel({ storeId }: { storeId: string }) {
             .map((action) => `${action.title}. Shift ${action.shiftPct}% from ${action.sourceCategory} to ${action.targetCategory}.`)
             .join(" ")
         : "";
-      const voiceSnippet =
-        payload.voiceSummary ?? fallbackActionSummary || payload.narration?.map((entry) => entry.text).join(" ") ?? "";
+      const narrationText = payload.narration?.map((entry) => entry.text).join(" ") ?? "";
+      const voiceSnippet = payload.voiceSummary ?? fallbackActionSummary ?? narrationText;
       if (voiceSnippet.trim().length > 0) {
         try {
           const voiceRes = await fetch("/api/voice/summary", {
