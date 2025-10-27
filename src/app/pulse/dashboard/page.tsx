@@ -1,6 +1,14 @@
 import { headers } from "next/headers";
 import CommandCenter from "@/components/CommandCenter";
 import type { NetworkSummary } from "@/lib/types";
+import stores from "@/data/network-stores.json";
+import suggestedActions from "@/data/network-actions.json";
+
+const FALLBACK_SUMMARY: NetworkSummary = {
+  generatedAt: new Date().toISOString(),
+  stores: stores as NetworkSummary["stores"],
+  suggested: suggestedActions as NetworkSummary["suggested"],
+};
 
 async function resolveBaseUrl() {
   const hdrs = await headers();
@@ -11,12 +19,20 @@ async function resolveBaseUrl() {
 }
 
 async function fetchNetworkSummary(): Promise<NetworkSummary> {
-  const base = process.env.NEXT_PUBLIC_BASE_URL ?? (await resolveBaseUrl());
-  const res = await fetch(`${base}/api/network/summary`, { cache: "no-store" });
-  if (!res.ok) {
-    throw new Error(`Failed to load network summary (status ${res.status})`);
+  try {
+    const base = process.env.NEXT_PUBLIC_BASE_URL ?? (await resolveBaseUrl());
+    const res = await fetch(`${base}/api/network/summary`, { cache: "no-store" });
+    if (!res.ok) {
+      throw new Error(`Failed to load network summary (status ${res.status})`);
+    }
+    return (await res.json()) as NetworkSummary;
+  } catch (error) {
+    console.warn("Falling back to bundled network summary", error);
+    return {
+      ...FALLBACK_SUMMARY,
+      generatedAt: new Date().toISOString(),
+    };
   }
-  return (await res.json()) as NetworkSummary;
 }
 
 export default async function DashboardPage() {
