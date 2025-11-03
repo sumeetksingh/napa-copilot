@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
 /* your custom styles can go below */
-/* enable 3D flip feel */
-.rotate-y-180 { transform: rotateY(180deg); }
 :root { color-scheme: dark; }
 html, body {
   background: #030712;   /* deep navy */
@@ -1453,6 +1451,166 @@ html, body {
   cursor: not-allowed;
   transform: none;
 }
+
+/* Review Drawer Metrics */
+.review-drawer__metrics {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(145deg, rgba(10,20,42,0.92), rgba(7,14,32,0.9));
+  border-radius: 16px;
+  border: 1px solid rgba(82,118,198,0.28);
+  margin: 1rem 0;
+}
+
+.review-drawer__metrics .metric {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.review-drawer__metrics .metric__label {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.62rem;
+  color: rgba(171,194,240,0.65);
+}
+
+.review-drawer__metrics .metric__value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.review-drawer__metrics .metric__value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #f3f6ff;
+}
+
+.review-drawer__metrics .metric__value.healthy {
+  color: #34d399;
+}
+
+.review-drawer__metrics .metric__value.warning {
+  color: #facc15;
+}
+
+.review-drawer__metrics .metric__value.critical {
+  color: #f87171;
+}
+
+.review-drawer__metrics .metric__delta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.review-drawer__metrics .metric__delta.positive {
+  color: #34d399;
+}
+
+.review-drawer__metrics .metric__delta.negative {
+  color: #f87171;
+}
+
+.review-drawer__metrics .metric__delta.neutral {
+  color: rgba(171,194,240,0.5);
+}
+
+/* SKU Selection Checkboxes */
+.review-drawer__skus .label__count {
+  margin-left: 0.5rem;
+  color: rgba(118,168,255,0.65);
+  font-weight: 600;
+}
+
+.review-drawer__skus .sku-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.65rem;
+  border-radius: 10px;
+  background: rgba(10,20,42,0.4);
+  border: 1px solid rgba(82,118,198,0.15);
+  transition: all 0.2s ease;
+}
+
+.review-drawer__skus .sku-item:hover {
+  background: rgba(15,30,58,0.55);
+  border-color: rgba(118,168,255,0.3);
+}
+
+.review-drawer__skus .sku-checkbox {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.review-drawer__skus .sku-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+}
+
+.review-drawer__skus .sku-checkbox__mark {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(118,168,255,0.45);
+  border-radius: 4px;
+  background: rgba(10,20,42,0.6);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.review-drawer__skus .sku-checkbox input:checked ~ .sku-checkbox__mark {
+  background: linear-gradient(135deg, rgba(59,130,246,0.95), rgba(96,165,250,0.85));
+  border-color: rgba(147,197,253,0.8);
+  box-shadow: 0 0 12px rgba(59,130,246,0.4);
+}
+
+.review-drawer__skus .sku-checkbox input:checked ~ .sku-checkbox__mark::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.review-drawer__skus .sku-checkbox:hover .sku-checkbox__mark {
+  border-color: rgba(147,197,253,0.7);
+}
+
+.review-drawer__skus .sku-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.review-drawer__skus .sku-content strong {
+  color: rgba(213,222,255,0.9);
+  font-size: 0.82rem;
+}
+
+.review-drawer__skus .sku-content span {
+  font-size: 0.68rem;
+  color: rgba(168,186,222,0.65);
+}
+
 .actions-panel {
   display: flex;
   flex-direction: column;

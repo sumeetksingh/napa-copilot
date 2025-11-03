@@ -4,11 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Scene from "@/components/Scene";
 import Hud from "@/components/Hud";
-import Legend from "@/components/Legend";
 import InventoryTiles from "@/components/InventoryTiles";
 import LiveSummaryPanel from "@/components/LiveSummaryPanel";
 import ChatPanel from "@/components/ChatPanel";
 import ReviewDrawer from "@/components/ReviewDrawer";
+import WhatIfPanel from "@/components/WhatIfPanel";
 import type { StoreSummary } from "@/lib/types";
 import { useStore } from "@/lib/useStore";
 
@@ -152,13 +152,12 @@ export default function PulseExperience({ initialSummary }: { initialSummary: St
                   )}
                 </motion.div>
               </AnimatePresence>
-
-              <Legend />
             </motion.section>
           </motion.div>
         </div>
       </motion.main>
       <ReviewDrawer />
+      <WhatIfPanel />
     </motion.div>
   );
 }

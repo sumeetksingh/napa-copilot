@@ -14,6 +14,26 @@ export type ConversationMessage = {
 
 export type ActionStatus = "pending" | "in_review" | "applied" | "dismissed";
 
+export type WhatIfScenario = {
+  mezzanineSqft: number;
+  addBudget: number;
+  constraints: {
+    staffingOK: boolean;
+    receivingXpw: number;
+    bays: number;
+  };
+  distribution: "topCategories" | "even";
+  upliftPreset: "conservative" | "base" | "aggressive";
+};
+
+export type ScenarioKPIs = {
+  revenue: number;
+  avgInventory: number;
+  turns: number;
+  capacityPct: number;
+  onHand: number;
+};
+
 export type AgentActionState = {
   id: string;
   title: string;
@@ -86,6 +106,14 @@ type StoreState = {
 
   hasHeardIntro: boolean;
   setHasHeardIntro: (value: boolean) => void;
+
+  whatIfActive: boolean;
+  whatIfScenario: WhatIfScenario;
+  scenarioKPIs: ScenarioKPIs | null;
+  setWhatIfActive: (active: boolean) => void;
+  setWhatIfScenario: (scenario: Partial<WhatIfScenario>) => void;
+  computeScenario: () => void;
+  resetScenario: () => void;
 };
 
 const randomId = () => {
@@ -99,6 +127,18 @@ const initialOverrides: SummaryOverrides = {
   categoryAdjustments: {},
   capacityOffset: 0,
   onHandOffset: 0,
+};
+
+const defaultWhatIfScenario: WhatIfScenario = {
+  mezzanineSqft: 0,
+  addBudget: 0,
+  constraints: {
+    staffingOK: true,
+    receivingXpw: 2,
+    bays: 0,
+  },
+  distribution: "even",
+  upliftPreset: "base",
 };
 
 export const useStore = create<StoreState>((set, get) => ({
@@ -292,4 +332,69 @@ export const useStore = create<StoreState>((set, get) => ({
 
   hasHeardIntro: false,
   setHasHeardIntro: (value) => set({ hasHeardIntro: value }),
+
+  whatIfActive: false,
+  whatIfScenario: { ...defaultWhatIfScenario },
+  scenarioKPIs: null,
+
+  setWhatIfActive: (active) => set({ whatIfActive: active }),
+
+  setWhatIfScenario: (scenario) =>
+    set((state) => ({
+      whatIfScenario: { ...state.whatIfScenario, ...scenario },
+    })),
+
+  computeScenario: () => {
+    const state = get();
+    const baseline = state.baseline;
+    if (!baseline) {
+      set({ scenarioKPIs: null });
+      return;
+    }
+
+    const scenario = state.whatIfScenario;
+    const storeSqft = 8000; // Assume standard store size
+    const baseRevenue = baseline.onHand * 45; // Assume $45 avg per unit revenue
+    const baseTurns = 4.2; // Industry baseline
+
+    // Capacity factor from mezzanine
+    const capacityFactor = 1 + scenario.mezzanineSqft / storeSqft;
+
+    // Uplift presets
+    const upliftPresetFactors = { conservative: 0.03, base: 0.07, aggressive: 0.12 };
+    const upliftFactor = upliftPresetFactors[scenario.upliftPreset];
+
+    // Constraint dampening
+    const staffingCap = scenario.constraints.staffingOK ? 1 : 0.85;
+    const receivingCap = scenario.constraints.receivingXpw >= 3 ? 1 : 0.9;
+    const constraintCap = Math.min(staffingCap, receivingCap);
+
+    // CapEx effect (diminishing returns)
+    const capexEffect = 1 + Math.log1p(scenario.addBudget / 100000) * 0.15;
+
+    // Calculate scenario KPIs
+    const salesUplift = upliftFactor * constraintCap;
+    const revenueScenario = baseRevenue * (1 + salesUplift) * capexEffect;
+    const avgInventoryScenario = baseline.onHand * capacityFactor * 0.95; // Better flow efficiency
+    const turnsScenario = (revenueScenario / (avgInventoryScenario * 45)) * baseTurns;
+    const capacityPctScenario = baseline.capacityPct * capacityFactor * 0.92; // Improved with mezzanine
+    const onHandScenario = Math.round(avgInventoryScenario);
+
+    set({
+      scenarioKPIs: {
+        revenue: Math.round(revenueScenario),
+        avgInventory: Math.round(avgInventoryScenario),
+        turns: Math.round(turnsScenario * 10) / 10,
+        capacityPct: Math.round(capacityPctScenario * 100) / 100,
+        onHand: onHandScenario,
+      },
+    });
+  },
+
+  resetScenario: () =>
+    set({
+      whatIfScenario: { ...defaultWhatIfScenario },
+      scenarioKPIs: null,
+      whatIfActive: false,
+    }),
 }));

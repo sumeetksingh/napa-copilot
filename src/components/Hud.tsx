@@ -15,26 +15,40 @@ export default function Hud({ summary, inventoryHealth }: { summary: StoreSummar
   const setHighlight = useStore((state) => state.setHighlight);
   const setFilters = useStore((state) => state.setFilters);
   const filters = useStore((state) => state.filters);
+  const whatIfActive = useStore((state) => state.whatIfActive);
+  const scenarioKPIs = useStore((state) => state.scenarioKPIs);
+  const setWhatIfActive = useStore((state) => state.setWhatIfActive);
+  const baseline = useStore((state) => state.baseline);
 
-  const metrics = useMemo(
-    () => [
+  const baseTurns = 4.2;
+  const baseRevenue = baseline ? baseline.onHand * 45 : 0;
+
+  const metrics = useMemo(() => {
+    const scenarioOnHand = scenarioKPIs?.onHand ?? summary.totals.onHand;
+    const scenarioCapacity = scenarioKPIs?.capacityPct ?? summary.totals.capacityPct;
+    const scenarioTurns = scenarioKPIs?.turns ?? baseTurns;
+
+    return [
       {
         label: "On hand",
-        value: summary.totals.onHand.toLocaleString(),
+        value: scenarioOnHand.toLocaleString(),
+        baseline: baseline?.onHand,
         tone: "base",
         detail: "units",
       },
       {
-        label: "SKUs",
-        value: summary.totals.skuCount.toLocaleString(),
-        tone: "base",
-        detail: "active",
+        label: "Turns",
+        value: scenarioTurns.toFixed(1),
+        baseline: baseTurns,
+        tone: scenarioTurns > baseTurns ? "ok" : "caution",
+        detail: "annual",
       },
       {
         label: "Capacity",
-        value: `${Math.round(summary.totals.capacityPct * 100).toLocaleString()}%`,
-        tone: summary.totals.capacityPct >= 1 ? "alert" : "ok",
-        detail: summary.totals.capacityPct >= 1 ? "over capacity" : "within plan",
+        value: `${Math.round(scenarioCapacity * 100).toLocaleString()}%`,
+        baseline: baseline?.capacityPct,
+        tone: scenarioCapacity >= 1 ? "alert" : "ok",
+        detail: scenarioCapacity >= 1 ? "over capacity" : "within plan",
       },
       {
         label: "Health",
@@ -42,9 +56,8 @@ export default function Hud({ summary, inventoryHealth }: { summary: StoreSummar
         tone: inventoryHealth < 60 ? "alert" : inventoryHealth < 80 ? "caution" : "ok",
         detail: "score",
       },
-    ],
-    [summary.totals.capacityPct, summary.totals.onHand, summary.totals.skuCount, inventoryHealth],
-  );
+    ];
+  }, [summary.totals, inventoryHealth, scenarioKPIs, baseline, baseTurns]);
 
   return (
     <motion.section
@@ -54,34 +67,71 @@ export default function Hud({ summary, inventoryHealth }: { summary: StoreSummar
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-xs uppercase tracking-[0.4em] text-slate-200/60">Pulse telemetry</p>
-          <p className="text-sm text-white/60">
-            Updated {new Date(summary.asOf).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
-          </p>
+        <div className="flex items-center gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.4em] text-slate-200/60">Pulse telemetry</p>
+            <p className="text-sm text-white/60">
+              Updated {new Date(summary.asOf).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+            </p>
+          </div>
+          <motion.button
+            onClick={() => setWhatIfActive(!whatIfActive)}
+            className={`px-4 py-2 rounded-lg text-xs font-medium uppercase tracking-[0.2em] transition ${
+              whatIfActive
+                ? "bg-sky-600 text-white shadow-[0_0_20px_rgba(56,189,248,0.4)]"
+                : "bg-[#14244a] text-sky-200 hover:bg-[#1a2f5a] ring-1 ring-sky-400/30"
+            }`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {whatIfActive ? "✓ What-If Active" : "What-If Analysis"}
+          </motion.button>
         </div>
         <div className="flex gap-3">
-          {metrics.map((metric, index) => (
-            <motion.div
-              key={metric.label}
-              className={`rounded-xl px-4 py-3 text-sm border border-[#1f325e] bg-[#0b152b]/80 min-w-[130px] ${
-                metric.tone === "alert"
-                  ? "shadow-[0_0_18px_rgba(248,113,113,0.45)] border-[#f87171]/60 text-[#fca5a5]"
-                  : metric.tone === "caution"
-                    ? "shadow-[0_0_18px_rgba(250,204,21,0.32)] border-[#facc15]/50 text-[#fde68a]"
-                    : metric.tone === "ok"
-                      ? "shadow-[0_0_18px_rgba(134,239,172,0.35)] border-[#34d399]/40 text-[#a7f3d0]"
-                      : ""
-              }`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 * index + 0.15, duration: 0.35, ease: "easeOut" }}
-            >
-              <div className="text-[11px] uppercase tracking-[0.3em] text-white/45">{metric.label}</div>
-              <div className="mt-1 text-xl font-semibold leading-tight">{metric.value}</div>
-              <div className="text-[11px] uppercase tracking-[0.25em] text-white/30">{metric.detail}</div>
-            </motion.div>
-          ))}
+          {metrics.map((metric, index) => {
+            const hasScenario = whatIfActive && scenarioKPIs && metric.baseline !== undefined;
+            const delta = hasScenario
+              ? parseFloat(metric.value.replace(/,/g, "").replace("%", "")) - 
+                (typeof metric.baseline === "number" ? metric.baseline * (metric.label === "Capacity" ? 100 : 1) : 0)
+              : 0;
+            const deltaPercent = hasScenario && metric.baseline
+              ? ((delta / (typeof metric.baseline === "number" ? metric.baseline * (metric.label === "Capacity" ? 100 : 1) : 1)) * 100).toFixed(1)
+              : "0";
+
+            return (
+              <motion.div
+                key={metric.label}
+                className={`rounded-xl px-4 py-3 text-sm border border-[#1f325e] bg-[#0b152b]/80 min-w-[130px] relative ${
+                  metric.tone === "alert"
+                    ? "shadow-[0_0_18px_rgba(248,113,113,0.45)] border-[#f87171]/60 text-[#fca5a5]"
+                    : metric.tone === "caution"
+                      ? "shadow-[0_0_18px_rgba(250,204,21,0.32)] border-[#facc15]/50 text-[#fde68a]"
+                      : metric.tone === "ok"
+                        ? "shadow-[0_0_18px_rgba(134,239,172,0.35)] border-[#34d399]/40 text-[#a7f3d0]"
+                        : ""
+                }`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 * index + 0.15, duration: 0.35, ease: "easeOut" }}
+              >
+                <div className="text-[11px] uppercase tracking-[0.3em] text-white/45">{metric.label}</div>
+                <div className="mt-1 text-xl font-semibold leading-tight flex items-center gap-2">
+                  {metric.value}
+                  {hasScenario && delta !== 0 && (
+                    <motion.span
+                      className={`text-xs font-mono ${delta > 0 ? "text-emerald-400" : "text-red-400"}`}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      {delta > 0 ? "+" : ""}{deltaPercent}%
+                    </motion.span>
+                  )}
+                </div>
+                <div className="text-[11px] uppercase tracking-[0.25em] text-white/30">{metric.detail}</div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 

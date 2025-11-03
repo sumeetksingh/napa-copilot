@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Grid, Text } from "@react-three/drei";
 import NapaStoreFront from "@/components/NapaStoreFront";
+import Mezzanine from "@/components/Mezzanine";
 import type { StoreSummary } from "@/lib/types";
 import { catColor } from "@/lib/colors";
 import { useStore } from "@/lib/useStore";
@@ -38,11 +39,16 @@ function categoryColumns(categories: StoreSummary["categories"], overfill: numbe
 
 export default function Scene({ summary, inventoryHealth }: SceneProps) {
   const activeAction = useStore((state) => state.activeAction);
+  const whatIfActive = useStore((state) => state.whatIfActive);
+  const whatIfScenario = useStore((state) => state.whatIfScenario);
+  const scenarioKPIs = useStore((state) => state.scenarioKPIs);
+  
   const overfill = Math.max(0, summary.totals.capacityPct - 1);
   const fillHeight = 0.6 + Math.min(summary.totals.capacityPct, 1.6) * 4.6;
   const haloColor =
     inventoryHealth >= 85 ? "#34d399" : inventoryHealth >= 70 ? "#facc15" : inventoryHealth >= 50 ? "#f97316" : "#f87171";
 
+  const showMezzanine = whatIfActive && whatIfScenario.mezzanineSqft > 0;
   const columns = useMemo(() => categoryColumns(summary.categories, overfill), [summary.categories, overfill]);
 
   return (
@@ -70,6 +76,14 @@ export default function Scene({ summary, inventoryHealth }: SceneProps) {
 
         <group position={[0, 0, 0]}>
           <NapaStoreFront />
+          {showMezzanine && (
+            <group>
+              <Mezzanine />
+              <Text position={[0, 5.2, -4]} fontSize={0.45} color="#38bdf8" anchorX="center" anchorY="middle">
+                + {whatIfScenario.mezzanineSqft} sqft mezzanine
+              </Text>
+            </group>
+          )}
 
           <mesh position={[0, fillHeight / 2, 0]} castShadow>
             <boxGeometry args={[STORE_HALF_WIDTH * 1.8, fillHeight, STORE_DEPTH * 1.8]} />
