@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
-import CommandCenter from "@/components/CommandCenter";
+import CommandCenterV4 from "@/components/CommandCenterV4";
 import type { NetworkSummary } from "@/lib/types";
+import "@/styles/command-center-v4.css";
 import stores from "@/data/network-stores.json";
 import suggestedActions from "@/data/network-actions.json";
 
@@ -38,9 +39,5 @@ async function fetchNetworkSummary(): Promise<NetworkSummary> {
 
 export default async function DashboardPage() {
   const summary = await fetchNetworkSummary();
-  return (
-    <div className="h-[calc(100vh-2rem)] p-4">
-      <CommandCenter summary={summary} />
-    </div>
-  );
+  return <CommandCenterV4 summary={summary} />;
 }

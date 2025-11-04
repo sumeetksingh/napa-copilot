@@ -2,25 +2,206 @@
   {
     "id": "action_capacity_atl050",
     "storeId": "ATL_050",
-    "title": "ATL_050 trending at 105% capacity",
-    "detail": "Brake pad and battery bays are overflowing—schedule a trim run within the next 6 hours.",
-    "type": "capacity",
-    "urgency": "high"
+    "title": "ATL_050 - Brake Pads Overstocked",
+    "detail": "Brake pad and battery bays are at 105% capacity. Trim 3 slow-moving SKUs to free space and avoid revenue loss.",
+    "type": "rebalance",
+    "urgency": "high",
+    "status": "pending",
+    "aiConfidence": 94,
+    "autoApprovalEligible": false,
+    "impact": {
+      "financial": {
+        "amount": 2300,
+        "type": "revenue"
+      },
+      "operational": {
+        "capacityChange": -5,
+        "turnsImprovement": 0.3,
+        "unitsAffected": 45
+      },
+      "timeSensitivity": {
+        "urgency": "critical",
+        "hoursToCritical": 6
+      }
+    },
+    "orders": [
+      {
+        "id": "order_atl050_001",
+        "skuIds": ["SKU_001", "SKU_002", "SKU_003"],
+        "skuCount": 3,
+        "totalUnits": 12,
+        "estimatedCost": 850,
+        "vendor": "Wagner Parts",
+        "estimatedDelivery": "2-3 days"
+      }
+    ],
+    "returns": []
   },
   {
     "id": "action_returns_dal044",
     "storeId": "DAL_044",
-    "title": "Return agent flagged 10 SKUs in DAL_044",
-    "detail": "Return window closes by Friday. Review the pull sheet before approving the pickup.",
+    "title": "DAL_044 - Returns Backlog Critical",
+    "detail": "10 SKUs flagged for return, window closes Friday. Process now to free 12% capacity and avoid penalties.",
     "type": "returns",
-    "urgency": "medium"
+    "urgency": "medium",
+    "status": "pending",
+    "aiConfidence": 87,
+    "autoApprovalEligible": true,
+    "impact": {
+      "financial": {
+        "amount": 1800,
+        "type": "cost"
+      },
+      "operational": {
+        "capacityChange": -12,
+        "unitsAffected": 68
+      },
+      "timeSensitivity": {
+        "urgency": "important",
+        "hoursToCritical": 48
+      }
+    },
+    "orders": [],
+    "returns": [
+      {
+        "id": "return_dal044_001",
+        "skuIds": ["SKU_R01", "SKU_R02", "SKU_R03", "SKU_R04", "SKU_R05", "SKU_R06", "SKU_R07", "SKU_R08", "SKU_R09", "SKU_R10"],
+        "skuCount": 10,
+        "totalUnits": 68,
+        "capacityFreed": 12,
+        "processingTime": "2-4 hours"
+      }
+    ]
   },
   {
-    "id": "action_ops_nyc105",
+    "id": "action_rebalance_nyc105",
     "storeId": "NYC_105",
-    "title": "Order callout at NYC_105",
-    "detail": "Rush alternator order waiting pick status—confirm parts pull and dispatch by 18:00.",
-    "type": "ops",
-    "urgency": "medium"
+    "title": "NYC_105 - Emergency Restock Needed",
+    "detail": "Oil and filters running critical low. Stockouts expected in 2 days. Rush order 8 high-velocity SKUs.",
+    "type": "capacity",
+    "urgency": "high",
+    "status": "pending",
+    "aiConfidence": 91,
+    "autoApprovalEligible": false,
+    "impact": {
+      "financial": {
+        "amount": 5200,
+        "type": "revenue"
+      },
+      "operational": {
+        "capacityChange": 8,
+        "turnsImprovement": 0.5,
+        "unitsAffected": 96
+      },
+      "timeSensitivity": {
+        "urgency": "critical",
+        "hoursToCritical": 48
+      }
+    },
+    "orders": [
+      {
+        "id": "order_nyc105_001",
+        "skuIds": ["SKU_O01", "SKU_O02", "SKU_O03", "SKU_O04", "SKU_F01", "SKU_F02", "SKU_F03", "SKU_F04"],
+        "skuCount": 8,
+        "totalUnits": 96,
+        "estimatedCost": 2400,
+        "vendor": "Mobil Distributors",
+        "estimatedDelivery": "1-2 days"
+      }
+    ],
+    "returns": []
+  },
+  {
+    "id": "action_optimize_mia067",
+    "storeId": "MIA_067",
+    "title": "MIA_067 - Optimize Battery Mix",
+    "detail": "Battery category at 85% of ideal mix. Rebalance Interstate vs DieHard ratios for better turns.",
+    "type": "rebalance",
+    "urgency": "low",
+    "status": "pending",
+    "aiConfidence": 78,
+    "autoApprovalEligible": true,
+    "impact": {
+      "financial": {
+        "amount": 1200,
+        "type": "savings"
+      },
+      "operational": {
+        "capacityChange": 0,
+        "turnsImprovement": 0.2,
+        "unitsAffected": 24
+      },
+      "timeSensitivity": {
+        "urgency": "routine"
+      }
+    },
+    "orders": [
+      {
+        "id": "order_mia067_001",
+        "skuIds": ["SKU_B01", "SKU_B02"],
+        "skuCount": 2,
+        "totalUnits": 18,
+        "estimatedCost": 650,
+        "vendor": "Interstate Batteries",
+        "estimatedDelivery": "3-5 days"
+      }
+    ],
+    "returns": [
+      {
+        "id": "return_mia067_001",
+        "skuIds": ["SKU_BR01"],
+        "skuCount": 1,
+        "totalUnits": 6,
+        "capacityFreed": 2,
+        "processingTime": "1-2 hours"
+      }
+    ]
+  },
+  {
+    "id": "action_capacity_chi089",
+    "storeId": "CHI_089",
+    "title": "CHI_089 - Spark Plugs Underperforming",
+    "detail": "Spark plug turns below target. Clear 15 units of slow NGK, bring in Champion for seasonal demand.",
+    "type": "rebalance",
+    "urgency": "medium",
+    "status": "pending",
+    "aiConfidence": 82,
+    "autoApprovalEligible": true,
+    "impact": {
+      "financial": {
+        "amount": 980,
+        "type": "savings"
+      },
+      "operational": {
+        "capacityChange": -3,
+        "turnsImprovement": 0.4,
+        "unitsAffected": 32
+      },
+      "timeSensitivity": {
+        "urgency": "important",
+        "hoursToCritical": 72
+      }
+    },
+    "orders": [
+      {
+        "id": "order_chi089_001",
+        "skuIds": ["SKU_SP01", "SKU_SP02"],
+        "skuCount": 2,
+        "totalUnits": 24,
+        "estimatedCost": 420,
+        "vendor": "Champion Auto",
+        "estimatedDelivery": "2-3 days"
+      }
+    ],
+    "returns": [
+      {
+        "id": "return_chi089_001",
+        "skuIds": ["SKU_SPR01", "SKU_SPR02"],
+        "skuCount": 2,
+        "totalUnits": 15,
+        "capacityFreed": 4,
+        "processingTime": "3-4 hours"
+      }
+    ]
   }
 ]
