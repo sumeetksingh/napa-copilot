@@ -1673,6 +1673,7 @@ html, body {
 .action-card__tag--returns { background: rgba(251,191,36,0.15); color: #fde68a; }
 .action-card__tag--staffing { background: rgba(96,165,250,0.15); color: #bfdbfe; }
 .action-card__tag--ops { background: rgba(134,239,172,0.15); color: #bbf7d0; }
+.action-card__tag--rebalance { background: rgba(167,139,250,0.15); color: #c4b5fd; }
 
 .action-card__title {
   margin: 0;

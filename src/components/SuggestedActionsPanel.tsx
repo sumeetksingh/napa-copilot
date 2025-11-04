@@ -7,6 +7,7 @@ const typeClass: Record<SuggestedAction["type"], string> = {
   returns: "action-card__tag--returns",
   staffing: "action-card__tag--staffing",
   ops: "action-card__tag--ops",
+  rebalance: "action-card__tag--rebalance",
 };
 
 const urgencyLabel: Record<SuggestedAction["urgency"], string> = {
